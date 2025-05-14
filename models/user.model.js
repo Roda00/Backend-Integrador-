@@ -29,7 +29,7 @@ const userschema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8,
+        minlength: 4,
         maxlength: 100,
         trim: true
     },
@@ -54,6 +54,11 @@ const userschema = new Schema({
         enum: ['admin', 'user', 'moderator', 'editor'],
         default: 'user'
     },
+    image: {
+        type: [String],
+        required: true,
+        trim: true,
+    }
 
 })
 

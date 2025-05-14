@@ -1,5 +1,6 @@
 const Product = require("../models/product.model")
 
+
 // obtener todos los productos
 
 async function getProducts(req, res) {
@@ -24,20 +25,15 @@ async function getProducts(req, res) {
 // obtener un producto por ID
 async function getProductById(req, res) {
     try {
-        res.status(200).json({
-            message: "Lista de productos",
-            data: [
-                {
-                    id: 1,
-                    name: "Producto 1",
-                    price: 100
-                },
-                {
-                    id: 2,
-                    name: "Producto 2",
-                    price: 200
-                }
-            ]
+        const productId = await Product.findById(req.params.id)
+
+        if (!productId) {
+            return res.status(404).send({ message: "Producto no encontrado" })
+        }
+
+        res.status(200).send({
+            message: "Producto encontrado",
+            product: productId
         })
     } catch (error) {
         console.error("Error al obtener los productos:", error)
@@ -47,9 +43,6 @@ async function getProductById(req, res) {
 // crear un nuevo producto
 async function createProduct(req, res) {
     try {
-
-        console.log("req.file", req.files)
-        console.log("req.body", req.body)
 
         const product = new Product(req.body)
         if(req.files) {product.image = req.files[`image`].map(file => file.filename)}
@@ -70,21 +63,16 @@ async function createProduct(req, res) {
 // eliminar un producto por ID
 async function deleteProduct(req, res) {
     try {
-        res.status(200).json({
-            message: "Lista de productos",
-            data: [
-                {
-                    id: 1,
-                    name: "Producto 1",
-                    price: 100
-                },
-                {
-                    id: 2,
-                    name: "Producto 2",
-                    price: 200
-                }
-            ]
+        const productDeleted = await Product.findByIdAndDelete(req.params.id)
+
+        if (!productDeleted) {
+            return res.status(404).send({ message: "Producto no encontrado" })
+        }
+        res.status(200).send({
+            message: "Producto eliminado",
+            product: productDeleted
         })
+
     } catch (error) {
         console.error("Error al obtener los productos:", error)
         res.status(500).json({ message: "Error al obtener los productos" })
@@ -93,24 +81,28 @@ async function deleteProduct(req, res) {
 // actualizar un producto por ID
 async function updateProduct(req, res) {
     try {
-        res.status(200).json({
-            message: "Lista de productos",
-            data: [
-                {
-                    id: 1,
-                    name: "Producto 1",
-                    price: 100
-                },
-                {
-                    id: 2,
-                    name: "Producto 2",
-                    price: 200
-                }
-            ]
+        
+        const id = req.params.id
+        
+        const data = req.body
+
+        data.updatedAt = Date.now()
+
+        const updatedProduct = await Product.findByIdAndUpdate(id, data, { new: true })
+
+        if (!updatedProduct) {
+            return res.status(404).send({ message: "Producto no encontrado" })
+        }
+
+        res.status(200).send({
+            message: "Producto actualizado",
+            product: updatedProduct
         })
+
+
     } catch (error) {
         console.error("Error al obtener los productos:", error)
-        res.status(500).json({ message: "Error al obtener los productos" })
+        res.status(500).send({ message: "Error al obtener los productos" })
     }
 }
 

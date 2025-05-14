@@ -1,5 +1,5 @@
 const jws = require('jsonwebtoken');
-const SECRET = "Algun@secreto"
+const SECRET = process.env.SECRET_JWT
 
 
 function isAuth(req, res, next) {

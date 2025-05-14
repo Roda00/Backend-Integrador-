@@ -7,6 +7,6 @@ router.get('/orders',[isAuth] ,orderController.getOrders);
 
 
 // Crear una orden
-router.post('/orders', orderController.createOrder);
+router.post('/orders',[isAuth], orderController.createOrder);
 
 module.exports = router;
