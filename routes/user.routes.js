@@ -6,16 +6,13 @@ const upload = require('../middlewares/uploadFile');
 
 
 // obtener todos los usuarios
-router.get("/users", userController.getUsers);
+router.get("/users",[isAuth, isAdmin] ,userController.getUsers);
 
 // obtener un usuario por ID
 router.get("/users-id", userController.getUserById);
 
 // crear un nuevo usuario 
 router.post("/users",[upload] ,userController.createUser); 
-
-// obtener un usuario por ID
-router.get("/users/:id", userController.getUserById); 
 
 // eliminar un usuario por ID
 router.delete("/users/:id",[isAdmin, isAuth] ,userController.deleteUserById);
@@ -25,8 +22,6 @@ router.put("/users/:id", [isAuth, isAdmin, upload], userController.updateUserByI
 
 // realizar login de un usuario
 router.post("/login", userController.loginUser);
-
-// modificar la contraseña de un usuario
 
 
 // exportar el router

@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const {isAuth} = require('../middlewares/isAuth');
+const {isAuth, isAdmin} = require('../middlewares/isAuth');
 const orderController = require('../controllers/order.controller');
 
 // Obtener todas las ordenes
-router.get('/orders',[isAuth] ,orderController.getOrders);
+router.get('/orders',[isAuth, isAdmin] ,orderController.getOrders);
 
 
 // Crear una orden

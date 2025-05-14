@@ -13,7 +13,7 @@ router.get("/products", productController.getProducts);
 router.get('/products/:id', productController.getProductById);
 
 // Crear un nuevo producto
-router.post('/products', [upload] ,productController.createProduct);
+router.post('/products', [upload, isAuth, isAdmin] ,productController.createProduct);
 
 // Eliminar un producto por ID
 router.delete('/products/:id',[isAdmin, isAuth] ,productController.deleteProduct);
